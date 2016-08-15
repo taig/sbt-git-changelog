@@ -5,10 +5,11 @@
 ## Installation
 
 ```
-addSbtPlugin( "io.taig" % "sbt-git-changelog" % "1.0.0-SNAPSHOT" )
+addSbtPlugin( "io.taig" % "sbt-git-changelog" % "1.0.0-RC1" )
 ```
 
 ## Usage
 
 ```
+> changelogGenerate
 ```
