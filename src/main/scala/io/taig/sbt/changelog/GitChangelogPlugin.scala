@@ -17,7 +17,7 @@ object GitChangelogPlugin extends AutoPlugin {
 
     import autoImport._
 
-    override def trigger = allRequirements
+    override def trigger = noTrigger
 
     override def projectSettings: Seq[Def.Setting[_]] = Seq(
         changelogGit := {
