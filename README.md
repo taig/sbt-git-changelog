@@ -5,7 +5,7 @@
 ## Installation
 
 ```
-addSbtPlugin( "io.taig" % "sbt-git-changelog" % "1.0.0-RC1" )
+addSbtPlugin( "io.taig" % "sbt-git-changelog" % "1.0.0-RC2" )
 ```
 
 ## Usage

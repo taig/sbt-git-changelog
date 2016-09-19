@@ -4,10 +4,8 @@ import cats.data.Xor
 import cats.syntax.xor._
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.NoHeadException
-import org.eclipse.jgit.lib.{ AnyObjectId, Constants }
-import org.eclipse.jgit.revwalk.{ RevCommit, RevWalk }
-import org.eclipse.jgit.revwalk.filter.RevFilter
-import org.eclipse.jgit.treewalk.TreeWalk
+import org.eclipse.jgit.lib.AnyObjectId
+import org.eclipse.jgit.revwalk.RevWalk
 
 import scala.collection.JavaConversions._
 import scala.language.reflectiveCalls
