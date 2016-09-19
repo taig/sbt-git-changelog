@@ -5,7 +5,9 @@ import cats.syntax.xor._
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.NoHeadException
 import org.eclipse.jgit.lib.{ AnyObjectId, Constants }
-import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.{ RevCommit, RevWalk }
+import org.eclipse.jgit.revwalk.filter.RevFilter
+import org.eclipse.jgit.treewalk.TreeWalk
 
 import scala.collection.JavaConversions._
 import scala.language.reflectiveCalls
@@ -44,22 +46,18 @@ object Helper {
     /**
      * Gets a commit Iterator for all commits from the given range
      */
-    def commits( range: Option[Range] )( implicit g: Git ): Iterator[RevCommit] = {
-        val iterator = for {
-            ref ← Option( g.getRepository.exactRef( Constants.HEAD ) )
-            id ← Option( ref.getObjectId )
-        } yield {
-            val log = g.log()
+    def commits( range: Option[Range] )( implicit g: Git ): RevWalk = {
+        val walk = new RevWalk( g.getRepository )
 
-            range.foreach {
-                case Xor.Left( ( since, until ) ) ⇒ log.addRange( since, until )
-                case Xor.Right( start )           ⇒ log.add( start )
-            }
-
-            log.call().iterator().to[Iterator]
+        range.foreach {
+            case Xor.Left( ( since, until ) ) ⇒
+                walk.markStart( walk.lookupCommit( since ) )
+                walk.markUninteresting( walk.lookupCommit( until ) )
+            case Xor.Right( start ) ⇒
+                walk.markStart( walk.lookupCommit( start ) )
         }
 
-        iterator.getOrElse( Iterator.empty )
+        walk
     }
 
     def parseRange( range: String )( implicit g: Git ): Option[( String, String ) Xor String] = {

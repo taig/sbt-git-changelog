@@ -5,6 +5,7 @@ import java.util.Date
 import cats.data.NonEmptyList
 import io.taig.sbt.changelog.Helper.Range
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.revwalk.RevCommit
 import sbt._
 
@@ -29,7 +30,7 @@ trait Keys {
         "Find the most recent git tags"
     }
 
-    val changelogCommits = taskKey[Option[Range] ⇒ Iterator[RevCommit]] {
+    val changelogCommits = taskKey[Option[Range] ⇒ RevWalk] {
         "Get every commit in the given range, entire commit history when no " +
             "range is None"
     }

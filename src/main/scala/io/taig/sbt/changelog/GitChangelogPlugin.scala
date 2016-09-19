@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import cats.data.NonEmptyList
-import cats.std.list._
+import cats.instances.list._
 import org.eclipse.jgit.api.Git
 import sbt.Keys._
 import sbt._
@@ -82,6 +82,8 @@ object GitChangelogPlugin extends AutoPlugin {
             """.stripMargin.trim
         },
         changelogEntryCommits := {
+            import collection.JavaConversions._
+
             val range = Helper.using( changelogGit.value ) { implicit git ⇒
                 Helper.resolveDefaultRange( changelogRecentTags.value )
             }
@@ -109,7 +111,7 @@ object GitChangelogPlugin extends AutoPlugin {
             val commits = changelogEntryCommits.value
             val content = commits
                 .map( changelogEntryCommitFormat.value )
-                .unwrap
+                .toList
                 .mkString( "\n" )
             val entry = changelogFormatEntry.value( title, date, content )
 
