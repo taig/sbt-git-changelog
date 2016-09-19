@@ -49,10 +49,10 @@ object Helper {
     def commits( range: Option[Range] )( implicit g: Git ): RevWalk = {
         val walk = new RevWalk( g.getRepository )
 
-        range.foreach {
+        range.getOrElse( HEAD.right ) match {
             case Xor.Left( ( since, until ) ) ⇒
-                walk.markStart( walk.lookupCommit( since ) )
-                walk.markUninteresting( walk.lookupCommit( until ) )
+                walk.markStart( walk.lookupCommit( until ) )
+                walk.markUninteresting( walk.lookupCommit( since ) )
             case Xor.Right( start ) ⇒
                 walk.markStart( walk.lookupCommit( start ) )
         }
